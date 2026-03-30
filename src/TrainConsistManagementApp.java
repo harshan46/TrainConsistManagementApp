@@ -1,61 +1,50 @@
 import java.util.*;
-import java.util.regex.*;
+import java.util.stream.*;
 
-class Bogie {
-    String name;
-    int capacity;
+class GoodsBogie {
+    String type;   // e.g., Cylindrical, Open, Box
+    String cargo;  // e.g., Petroleum, Coal, Grain
 
-    public Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
+    public GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
     }
 
     public void display() {
-        System.out.println(name + " - Capacity: " + capacity);
+        System.out.println(type + " Bogie carrying " + cargo);
     }
 }
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        // Step 1: Create list of goods bogies
+        List<GoodsBogie> bogies = new ArrayList<>();
 
-        // Step 1: Take user input
-        System.out.print("Enter Train ID: ");
-        String trainId = sc.nextLine();
+        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        bogies.add(new GoodsBogie("Open", "Coal"));
+        bogies.add(new GoodsBogie("Box", "Grain"));
+        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
 
-        System.out.print("Enter Cargo Code: ");
-        String cargoCode = sc.nextLine();
+        // Step 2: Apply safety validation using allMatch()
+        boolean isSafe = bogies.stream()
+                .allMatch(b ->
+                        // Rule: Cylindrical bogie → only Petroleum allowed
+                        !b.type.equalsIgnoreCase("Cylindrical") ||
+                                b.cargo.equalsIgnoreCase("Petroleum")
+                );
 
-        // Step 2: Define regex patterns
-        String trainRegex = "TRN-\\d{4}";
-        String cargoRegex = "PET-[A-Z]{2}";
-
-        // Step 3: Compile patterns
-        Pattern trainPattern = Pattern.compile(trainRegex);
-        Pattern cargoPattern = Pattern.compile(cargoRegex);
-
-        // Step 4: Create matchers
-        Matcher trainMatcher = trainPattern.matcher(trainId);
-        Matcher cargoMatcher = cargoPattern.matcher(cargoCode);
-
-        // Step 5: Validate using matches()
-        boolean isTrainValid = trainMatcher.matches();
-        boolean isCargoValid = cargoMatcher.matches();
-
-        // Step 6: Display results
-        if (isTrainValid) {
-            System.out.println("Valid Train ID");
+        // Step 3: Display result
+        if (isSafe) {
+            System.out.println("Train is SAFETY COMPLIANT ✅");
         } else {
-            System.out.println("Invalid Train ID");
+            System.out.println("Train is NOT SAFE ❌");
         }
 
-        if (isCargoValid) {
-            System.out.println("Valid Cargo Code");
-        } else {
-            System.out.println("Invalid Cargo Code");
+        // Display bogie details
+        System.out.println("\nBogie Details:");
+        for (GoodsBogie b : bogies) {
+            b.display();
         }
-
-        sc.close();
     }
 }
