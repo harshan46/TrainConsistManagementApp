@@ -1,51 +1,77 @@
+import java.util.Arrays;
+
 public class TrainConsistManagementApp {
 
-    // Method to perform Linear Search
-    public static boolean linearSearch(String[] bogieIds, String key) {
+    // Binary Search Method
+    public static boolean binarySearch(String[] bogieIds, String key) {
 
-        for (int i = 0; i < bogieIds.length; i++) {
+        // Handle empty array
+        if (bogieIds.length == 0) {
+            System.out.println("Bogie list is empty.");
+            return false;
+        }
 
-            // Compare using equals()
-            if (bogieIds[i].equals(key)) {
-                System.out.println("Bogie ID found at position: " + i);
-                return true; // Early termination
+        int low = 0;
+        int high = bogieIds.length - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+
+            int result = bogieIds[mid].compareTo(key);
+
+            if (result == 0) {
+                System.out.println("Bogie ID found at position: " + mid);
+                return true;
+            }
+            else if (result < 0) {
+                low = mid + 1;   // Search right half
+            }
+            else {
+                high = mid - 1;  // Search left half
             }
         }
 
-        // If not found
         System.out.println("Bogie ID not found.");
         return false;
     }
 
     public static void main(String[] args) {
 
-        // Array of bogie IDs (unsorted)
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        // Unsorted input (will be sorted before search)
+        String[] bogieIds = {"BG309", "BG101", "BG550", "BG205", "BG412"};
+
+        // Ensure sorted data (important for Binary Search)
+        Arrays.sort(bogieIds);
+
+        System.out.println("Sorted Bogie IDs:");
+        System.out.println(Arrays.toString(bogieIds));
 
         // Search key
         String searchKey = "BG309";
 
-        System.out.println("Searching for Bogie ID: " + searchKey);
-
-        // Perform Linear Search
-        boolean result = linearSearch(bogieIds, searchKey);
-
+        System.out.println("\nSearching for: " + searchKey);
+        boolean result = binarySearch(bogieIds, searchKey);
         System.out.println("Search Result: " + result);
 
 
         // -------- Additional Test Cases --------
 
-        // Not found case
-        linearSearch(bogieIds, "BG999");
+        // Not found
+        binarySearch(bogieIds, "BG999");
 
-        // First element match
-        linearSearch(bogieIds, "BG101");
+        // First element
+        binarySearch(bogieIds, "BG101");
 
-        // Last element match
-        linearSearch(bogieIds, "BG550");
+        // Last element
+        binarySearch(bogieIds, "BG550");
 
-        // Single element array
+        // Single element
         String[] single = {"BG101"};
-        linearSearch(single, "BG101");
+        Arrays.sort(single);
+        binarySearch(single, "BG101");
+
+        // Empty array
+        String[] empty = {};
+        binarySearch(empty, "BG101");
     }
 }
