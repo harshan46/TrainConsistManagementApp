@@ -1,38 +1,51 @@
-import java.util.Arrays;
-
 public class TrainConsistManagementApp {
+
+    // Method to perform Linear Search
+    public static boolean linearSearch(String[] bogieIds, String key) {
+
+        for (int i = 0; i < bogieIds.length; i++) {
+
+            // Compare using equals()
+            if (bogieIds[i].equals(key)) {
+                System.out.println("Bogie ID found at position: " + i);
+                return true; // Early termination
+            }
+        }
+
+        // If not found
+        System.out.println("Bogie ID not found.");
+        return false;
+    }
 
     public static void main(String[] args) {
 
-        // Example bogie type names
-        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        // Array of bogie IDs (unsorted)
+        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        System.out.println("Before Sorting:");
-        System.out.println(Arrays.toString(bogieNames));
+        // Search key
+        String searchKey = "BG309";
 
-        // Sorting using built-in method
-        Arrays.sort(bogieNames);
+        System.out.println("Searching for Bogie ID: " + searchKey);
 
-        System.out.println("After Sorting (Alphabetical):");
-        System.out.println(Arrays.toString(bogieNames));
+        // Perform Linear Search
+        boolean result = linearSearch(bogieIds, searchKey);
+
+        System.out.println("Search Result: " + result);
 
 
         // -------- Additional Test Cases --------
 
-        // Unsorted input
-        String[] unsorted = {"Luxury", "General", "Sleeper", "AC Chair"};
-        Arrays.sort(unsorted);
+        // Not found case
+        linearSearch(bogieIds, "BG999");
 
-        // Already sorted
-        String[] sorted = {"AC Chair", "First Class", "General"};
-        Arrays.sort(sorted);
+        // First element match
+        linearSearch(bogieIds, "BG101");
 
-        // Duplicate values
-        String[] duplicates = {"Sleeper", "AC Chair", "Sleeper", "General"};
-        Arrays.sort(duplicates);
+        // Last element match
+        linearSearch(bogieIds, "BG550");
 
-        // Single element
-        String[] single = {"Sleeper"};
-        Arrays.sort(single);
+        // Single element array
+        String[] single = {"BG101"};
+        linearSearch(single, "BG101");
     }
 }
