@@ -1,53 +1,68 @@
-import java.util.*;
+class TrainConsistManagementApp {
 
-// Step 1: Create Custom Exception
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String message) {
-        super(message);
-    }
-}
+    // Method to perform Bubble Sort
+    public static void bubbleSort(int[] capacities) {
+        int n = capacities.length;
 
-// Step 2: Bogie Class with Validation
-class Bogie {
-    String name;
-    int capacity;
+        for (int i = 0; i < n - 1; i++) {
+            boolean swapped = false;
 
-    // Constructor with validation
-    public Bogie(String name, int capacity) throws InvalidCapacityException {
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be greater than zero");
+            for (int j = 0; j < n - i - 1; j++) {
+                if (capacities[j] > capacities[j + 1]) {
+                    // Swap
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+
+                    swapped = true;
+                }
+            }
+
+            // Optimization: stop if already sorted
+            if (!swapped) {
+                break;
+            }
         }
-        this.name = name;
-        this.capacity = capacity;
     }
 
-    public void display() {
-        System.out.println(name + " - Capacity: " + capacity);
+    // Method to display array
+    public static void display(int[] capacities) {
+        for (int cap : capacities) {
+            System.out.print(cap + " ");
+        }
+        System.out.println();
     }
-}
 
-// Step 3: Main Class
-public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
-        List<Bogie> bogies = new ArrayList<>();
+        // Example passenger bogie capacities
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        try {
-            // Valid bogies
-            bogies.add(new Bogie("Sleeper", 72));
-            bogies.add(new Bogie("AC Chair", 56));
+        System.out.println("Before Sorting:");
+        display(capacities);
 
-            // Invalid bogie (will throw exception)
-            bogies.add(new Bogie("First Class", 0));
+        // Sorting using Bubble Sort
+        bubbleSort(capacities);
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        System.out.println("After Sorting (Ascending):");
+        display(capacities);
 
-        // Display only valid bogies
-        System.out.println("\nValid Bogies in Train:");
-        for (Bogie b : bogies) {
-            b.display();
-        }
+        // Additional test cases
+
+        // Already sorted
+        int[] sortedArray = {24, 56, 60, 70, 72};
+        bubbleSort(sortedArray);
+
+        // Duplicate values
+        int[] duplicateArray = {72, 56, 56, 24};
+        bubbleSort(duplicateArray);
+
+        // Single element
+        int[] single = {50};
+        bubbleSort(single);
+
+        // All equal
+        int[] equal = {40, 40, 40};
+        bubbleSort(equal);
     }
 }
